@@ -49,6 +49,9 @@
     }
 
     .toggle-btn {
+      position: absolute;
+      top: 15px;
+      left: 260px;
       background-color: #0a66c2;
       color: white;
       border: none;
@@ -59,16 +62,16 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: left 0.3s ease, transform 0.3s ease;
+      z-index: 1100;
     }
 
-    .sidebar.collapsed .toggle-btn i {
-      transform: rotate(180deg);
+    .sidebar.collapsed + .toggle-btn {
+      left: 60px;
     }
 
     .logo {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 15px 20px;
       border-bottom: 1px solid #ddd;
@@ -281,9 +284,6 @@
   <div class="sidebar" id="sidebar">
     <div class="logo">
       <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn Logo" />
-      <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
-        <i class="fas fa-angle-double-left"></i>
-      </button>
     </div>
 
     <div class="profile">
@@ -326,6 +326,10 @@
     </div>
   </div>
 
+  <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+    <i class="fas fa-angle-double-left"></i>
+  </button>
+
   <main>
     <div class="welcome-box">
       <h2>Welcome to LinkedIn, Aliza Mangi</h2>
@@ -334,19 +338,19 @@
 
   <script>
     const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.querySelector(".toggle-btn i");
 
     function toggleSidebar() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.toggle("open");
-      } else {
-        sidebar.classList.toggle("collapsed");
-      }
+      sidebar.classList.toggle("collapsed");
+      toggleBtn.classList.toggle("fa-angle-double-left");
+      toggleBtn.classList.toggle("fa-angle-double-right");
     }
 
     window.addEventListener("click", function (e) {
       if (
         window.innerWidth <= 768 &&
         !sidebar.contains(e.target) &&
+        !e.target.closest(".toggle-btn") &&
         sidebar.classList.contains("open")
       ) {
         sidebar.classList.remove("open");
